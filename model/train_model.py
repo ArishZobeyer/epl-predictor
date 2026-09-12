@@ -42,3 +42,15 @@ accuracy = accuracy_score(y_test, predictions)
 print("\nTraining set size:", len(X_train))
 print("Test set size:", len(X_test))
 print("Accuracy:", accuracy)
+
+# Baseline: what if we always predicted Home Team wins?
+baseline_predictions = [0] * len(y_test)  # 0 = HOME_TEAM
+baseline_accuracy = accuracy_score(y_test, baseline_predictions)
+print("Baseline (always predict home win):", baseline_accuracy)
+
+import pickle
+
+with open("model/trained_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+print("Model saved to model/trained_model.pkl")
