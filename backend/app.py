@@ -1,15 +1,16 @@
 from flask import Flask, jsonify, request
-
 from flask_cors import CORS
 import pickle
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-# Load the trained model once, when the server starts
-with open("model/trained_model.pkl", "rb") as f:
-    model = pickle.load(f)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "..", "model", "trained_model.pkl")
 
+with open(MODEL_PATH, "rb") as f:
+    model = pickle.load(f)
 @app.route("/")
 def home():
     return jsonify({"message": "EPL Predictor API is running"})
