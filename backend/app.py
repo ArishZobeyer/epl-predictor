@@ -18,7 +18,7 @@ with open(MODEL_PATH, "rb") as f:
 
 # Make model/features.py importable, then load match data
 sys.path.append(os.path.join(BASE_DIR, "..", "model"))
-from features import get_team_form, get_head_to_head
+from features import get_team_form, get_head_to_head, get_goals_stats
 
 DATA_PATH = os.path.join(BASE_DIR, "..", "data", "raw_matches.json")
 with open(DATA_PATH) as f:
@@ -57,8 +57,13 @@ def predict_by_teams():
     home_form, _ = get_team_form(home_team, now, all_matches)
     away_form, _ = get_team_form(away_team, now, all_matches)
     h2h_home_wins, h2h_away_wins, h2h_draws, _ = get_head_to_head(home_team, away_team, now, all_matches)
+    home_avg_scored, home_avg_conceded = get_goals_stats(home_team, now, all_matches)
+    away_avg_scored, away_avg_conceded = get_goals_stats(away_team, now, all_matches)
 
-    features = [[home_form, away_form, h2h_home_wins, h2h_away_wins, h2h_draws]]
+    features = [[
+        home_form, away_form, h2h_home_wins, h2h_away_wins, h2h_draws,
+        home_avg_scored, home_avg_conceded, away_avg_scored, away_avg_conceded
+    ]]
     probabilities = model.predict_proba(features)[0]
 
     return jsonify({
@@ -68,7 +73,9 @@ def predict_by_teams():
         "away_form": away_form,
         "home_win_prob": probabilities[0],
         "draw_prob": probabilities[1],
-        "away_win_prob": probabilities[2]
+        "away_win_prob": probabilities[2],
+        "home_avg_scored": home_avg_scored,
+        "away_avg_scored": away_avg_scored
     })
 
 
