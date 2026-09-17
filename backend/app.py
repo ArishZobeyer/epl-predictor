@@ -75,7 +75,10 @@ def predict_by_teams():
         "draw_prob": probabilities[1],
         "away_win_prob": probabilities[2],
         "home_avg_scored": home_avg_scored,
-        "away_avg_scored": away_avg_scored
+        "away_avg_scored": away_avg_scored,
+        "h2h_home_wins": h2h_home_wins,
+        "h2h_away_wins": h2h_away_wins,
+        "h2h_draws": h2h_draws
     })
 
 
