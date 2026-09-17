@@ -16,13 +16,18 @@ for row in dataset:
         row["away_form"],
         row["h2h_home_wins"],
         row["h2h_away_wins"],
-        row["h2h_draws"]
+        row["h2h_draws"],
+        row["home_avg_scored"],
+        row["home_avg_conceded"],
+        row["away_avg_scored"],
+        row["away_avg_conceded"]
     ]
     X.append(features)
     y.append(row["result"])
 
 print("Number of examples:", len(X))
 print("Sample features:", X[0])
+print("Number of features per example:", len(X[0]))
 print("Sample label:", y[0])
 print("Unique labels:", set(y))
 
@@ -54,3 +59,10 @@ with open("model/trained_model.pkl", "wb") as f:
     pickle.dump(model, f)
 
 print("Model saved to model/trained_model.pkl")
+
+feature_names = ["home_form", "away_form", "h2h_home_wins", "h2h_away_wins", "h2h_draws",
+                  "home_avg_scored", "home_avg_conceded", "away_avg_scored", "away_avg_conceded"]
+
+importances = model.feature_importances_
+for name, importance in sorted(zip(feature_names, importances), key=lambda x: -x[1]):
+    print(f"{name}: {importance:.3f}")
