@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const API_URL = 'http://localhost:5000'
+const API_URL = 'https://epl-predictor-uwm7.onrender.com'
 
 function App() {
   const [teams, setTeams] = useState([])
